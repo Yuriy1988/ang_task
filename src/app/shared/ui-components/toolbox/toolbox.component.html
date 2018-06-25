@@ -6,13 +6,21 @@
         class="form-control"
         placeholder="Name, fragment or date"
         aria-label="Recipient's username"
+        [(ngModel)]="searchValue"
       >
       <div class="input-group-append">
-        <button class="btn btn-outline-primary" type="button">Find</button>
+        <button
+          class="btn btn-outline-primary"
+          type="button"
+          (click)="onFindClick(searchValue)"
+        >Find</button>
       </div>
     </div>
   </div>
   <div class="col-2 d-flex justify-content-end">
-    <button class="btn btn-primary">Add course</button>
+    <button
+    class="btn btn-primary"
+    (click)="onAddClick()"
+    >Add course</button>
   </div>
 </div>

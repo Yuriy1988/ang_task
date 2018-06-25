@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -11,10 +12,10 @@ import { CoursesModule } from './courses/courses.module';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     SharedModule,
     CoursesModule,
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

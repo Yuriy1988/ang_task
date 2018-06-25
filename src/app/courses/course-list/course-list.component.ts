@@ -25,6 +25,34 @@ const courses = [
     duration: 'duration3',
     description,
   },
+  {
+    id: 'id4',
+    title: 'title4',
+    creationDate: 'creationDate3',
+    duration: 'duration3',
+    description,
+  },
+  {
+    id: 'id5',
+    title: 'title5',
+    creationDate: 'creationDate3',
+    duration: 'duration3',
+    description,
+  },
+  {
+    id: 'id6',
+    title: 'title5',
+    creationDate: 'creationDate3',
+    duration: 'duration3',
+    description,
+  },
+  {
+    id: 'id7',
+    title: 'title5',
+    creationDate: 'creationDate3',
+    duration: 'duration3',
+    description,
+  },
 ];
 
 
@@ -38,5 +66,13 @@ export class CourseListComponent implements OnInit {
 
   ngOnInit() {
     this.courses = courses;
+  }
+
+  findCourse(value: string): void {
+      console.log(value);
+  }
+
+  addCourse(): void {
+    console.log('add course');
   }
 }
