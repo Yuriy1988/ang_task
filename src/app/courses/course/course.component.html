@@ -6,7 +6,7 @@
           <app-rating-star [isTopRated]="course.topRated"></app-rating-star>
       </div>
       <p class="col-2">{{ course.duration | duration }}</p>
-      <p class="col-2 text-right">{{ course.creationDate | date }}</p>
+      <p class="col-2 text-right">{{ course.creationDate | date:'MM.dd.yyyy' }}</p>
     </div>
     <div class="text-justify">
       {{ course.description }}

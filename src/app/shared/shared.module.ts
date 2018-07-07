@@ -15,6 +15,6 @@ import { PipesModule } from './pipes/pipes.module';
     UiComponentsModule,
     DirectivesModule,
     PipesModule,
-  ]
+  ],
 })
 export class SharedModule { }

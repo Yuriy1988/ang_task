@@ -1,5 +1,6 @@
+import { FilterByPipe } from './../../shared/pipes/filter-by/filter-by.pipe';
 import { Component, OnInit } from '@angular/core';
-import { Course } from '../course.interface';
+import { Course } from '../../shared/interfaces/course.interface';
 import * as moment from 'moment';
 
 // tslint:disable-next-line
@@ -67,17 +68,21 @@ export const courses = [
 @Component({
   selector: 'app-course-list',
   templateUrl: './course-list.component.html',
-  styleUrls: ['./course-list.component.scss']
+  styleUrls: ['./course-list.component.scss'],
+  providers: [ FilterByPipe ],
 })
 export class CourseListComponent implements OnInit {
   courses: Course[];
+  searchQuery: string;
+
+  constructor(private filterBy: FilterByPipe) {}
 
   ngOnInit() {
     this.courses = courses;
   }
 
   findCourse(value: string): void {
-    console.log(value);
+    this.searchQuery = value;
   }
 
   addCourse(): void {
