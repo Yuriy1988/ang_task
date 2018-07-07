@@ -1,8 +1,16 @@
-<div>
+<ng-container *ngIf="courses.length; else emptyState">
   <app-breadcrumbs></app-breadcrumbs>
   <app-toolbox
     (find)="findCourse($event)"
     (add)="addCourse()"
   ></app-toolbox>
-  <app-course *ngFor="let course of courses" [course]="course"></app-course>
-</div>
+    <app-course
+      *ngFor="let course of courses"
+      [course]="course"
+      [appDateWarning]="course.creationDate"
+   ></app-course>
+</ng-container>
+
+<ng-template #emptyState>
+  <app-empty-state></app-empty-state>
+</ng-template>

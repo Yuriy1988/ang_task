@@ -1,14 +1,17 @@
-<div class="card container-fluid d-flex flex-row pt-2 pb-2">
+<div class="card container-fluid d-flex flex-row pt-2 pb-2 pb-4">
   <div>
     <div class="row">
-      <p class="col-7">{{ course.title }}</p>
-      <p class="col-2">{{ course.duration }}</p>
-      <p class="col-3 text-right">{{ course.creationDate }}</p>
+      <div class="col-6 d-flex">
+          <div class="pr-2"> {{ course.title | uppercase }} </div>
+          <app-rating-star [isTopRated]="course.topRated"></app-rating-star>
+      </div>
+      <p class="col-2">{{ course.duration | duration }}</p>
+      <p class="col-2 text-right">{{ course.creationDate | date }}</p>
     </div>
     <div class="text-justify">
       {{ course.description }}
     </div>
-    </div>
+  </div>
   <div class="btn-group-sm d-flex flex-column justify-content-center m-2">
     <button class="btn badge-warning m-1">Edit</button>
     <button class="btn btn-danger m-1">Delete</button>

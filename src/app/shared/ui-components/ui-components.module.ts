@@ -6,6 +6,7 @@ import { FooterComponent } from './footer/footer.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RatingStarComponent } from './rating-star/rating-star.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { FormsModule } from '@angular/forms';
     LogoComponent,
     BreadcrumbsComponent,
     ToolboxComponent,
+    RatingStarComponent,
   ],
   exports: [
     FooterComponent,
@@ -25,6 +27,7 @@ import { FormsModule } from '@angular/forms';
     LogoComponent,
     BreadcrumbsComponent,
     ToolboxComponent,
-  ]
+    RatingStarComponent,
+  ],
 })
 export class UiComponentsModule { }
