@@ -69,13 +69,12 @@ export const courses = [
   selector: 'app-course-list',
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.scss'],
-  providers: [ FilterByPipe ],
 })
 export class CourseListComponent implements OnInit {
   courses: Course[];
   searchQuery: string;
 
-  constructor(private filterBy: FilterByPipe) {}
+  constructor() { }
 
   ngOnInit() {
     this.courses = courses;
