@@ -8,6 +8,7 @@
       *ngFor="let course of filtered"
       [course]="course"
       [appDateWarning]="course.creationDate"
+      (deleteCourse)="deleteCourse($event)"
    ></app-course>
    <ng-container *ngIf="!filtered.length">
     <app-empty-state></app-empty-state>

@@ -88,4 +88,8 @@ export class CourseListComponent implements OnInit {
   addCourse(): void {
     console.log('add course');
   }
+
+  deleteCourse(id: string): void {
+    console.log('delete course', id);
+  }
 }
