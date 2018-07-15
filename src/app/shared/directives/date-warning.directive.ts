@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import * as moment from 'moment';
 
 const isInPast = (dateToCheck) => moment(dateToCheck).isBefore(Date.now());
@@ -11,8 +11,9 @@ const isWithinTwoWeeks = (dateToCheck) => moment(dateToCheck).isAfter(moment(Dat
 export class DateWarningDirective implements OnInit {
   @Input() appDateWarning: string;
 
-  constructor(private el: ElementRef) {
+  constructor(private renderer: Renderer2, private el: ElementRef) {
   }
+
 
   ngOnInit() {
     this.checkDateStatus(this.appDateWarning);
@@ -29,6 +30,6 @@ export class DateWarningDirective implements OnInit {
   }
 
   private highlightBorder(color): void {
-    this.el.nativeElement.style.border = `1px solid ${color}`;
+    this.renderer.setStyle(this.el.nativeElement, 'outline', `1px solid ${color}`);
   }
 }

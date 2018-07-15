@@ -1,5 +1,5 @@
 <app-breadcrumbs></app-breadcrumbs>
-<ng-container *ngIf="(courses | orderBy: 'creationDate' | filterBy: 'title' : searchQuery) as filtered">
+<ng-container *ngIf="(courses | async | orderBy: 'creationDate' | filterBy: 'title' : searchQuery) as filtered">
   <app-toolbox
     (find)="findCourse($event)"
     (add)="addCourse()"

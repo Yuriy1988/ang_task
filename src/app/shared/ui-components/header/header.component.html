@@ -1,11 +1,15 @@
 <header class="navbar navbar-dark bg-dark box-shadow">
   <div class="d-flex justify-content-between container-fluid p-0">
     <app-logo></app-logo>
-    <div class="d-flex">
+    <div *ngIf="email" class="d-flex">
       <div class="user-status d-flex align-items-center mr-4">
-        <div>User login</div>
+        <div>User: {{ email }}</div>
       </div>
-      <button type="button" class="btn btn-primary">User off</button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="onLogout()"
+      >Logout</button>
     </div>
   </div>
 </header>
