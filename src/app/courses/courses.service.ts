@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import * as moment from 'moment';
-import { Course } from '../shared/interfaces/course.interface';
+import { Course } from '../shared/interfaces/course.model';
 import { ConfirmModalService } from '../shared/ui-components/confirm-modal/confirm-modal.service';
+import { filter, tap } from 'rxjs/operators';
 // tslint:disable-next-line
 const description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum';
 export let courses = [
@@ -76,26 +76,36 @@ export class CoursesService {
     return this.courses.asObservable();
   }
 
-  addCourse(): void {
-    console.log('create course');
+  addCourse(course: Course): void {
+    courses = courses.concat({
+      ...course,
+      id: String(Math.random()),
+      topRated: false,
+    });
+    this.courses.next(courses);
   }
 
   getCourseById(id: string): Observable<Course> {
     const course = courses.find((c: Course) => c.id === id);
-    return Observable.of(course);
+    return of(course);
   }
 
   updateCourse(id: string, course: Course): void {
     console.log(id, course);
   }
 
-  deleteCourse(id: string): void {
-    const sub = this.confirmModalService.open().subscribe((answer: boolean) => {
-      if (answer) {
-        courses = courses.filter(c => c.id !== id);
-        this.courses.next(courses);
-        sub.unsubscribe();
-      }
-    });
+  confirmDeletion(id): Observable<void> {
+    return this.confirmModalService
+      .open()
+      .pipe(
+        filter(Boolean),
+        tap(() => this.deleteCourse(id)),
+      );
+   }
+
+  private deleteCourse(id: string): void {
+    courses = courses.filter(c => c.id !== id);
+    this.courses.next(courses);
   }
 }
+

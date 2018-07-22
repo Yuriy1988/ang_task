@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
-import { Course } from '../../interfaces/course.interface';
+import { Course } from '../../interfaces/course.model';
 
 @Pipe({
   name: 'orderBy'

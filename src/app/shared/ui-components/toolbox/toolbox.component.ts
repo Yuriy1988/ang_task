@@ -8,7 +8,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 export class ToolboxComponent {
   @Output() find = new EventEmitter<string>();
   @Output() add = new EventEmitter<string>();
-  searhValue: string;
+  searchValue: string;
 
   onFindClick(value: string): void {
     this.find.emit(value);

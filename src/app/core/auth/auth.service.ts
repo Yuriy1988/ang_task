@@ -1,6 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { User } from './user-interface';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { User } from './user.model';
 
 export class AuthService {
   private userInfo = new BehaviorSubject<User>({
@@ -18,8 +17,8 @@ export class AuthService {
     this.userInfo.next({ isAuthenticated: false, email: '' });
   }
 
-  getIsAuthenticated(): Observable<User> {
-    return this.userInfo.asObservable();
+  getIsAuthenticated(): boolean {
+    return Boolean(localStorage.getItem('email'));
   }
 
   getUserInfo(): Observable<User> {

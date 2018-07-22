@@ -2,9 +2,5 @@
   [email]="email"
   (logout)="logout()"
 ></app-header>
-<app-course-list *ngIf="isAuthenticated" ></app-course-list>
-<app-login
-  class="d-flex align-items-center justify-content-center"
-  *ngIf="!isAuthenticated"
-></app-login>
+<router-outlet></router-outlet>
 <app-footer></app-footer>

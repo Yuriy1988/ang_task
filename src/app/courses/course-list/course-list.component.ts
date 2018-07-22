@@ -1,24 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Course } from '../../shared/interfaces/course.interface';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Course } from '../../shared/interfaces/course.model';
 import { CoursesService } from '../courses.service';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
-
+@AutoUnsubscribe()
 @Component({
   selector: 'app-course-list',
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.scss'],
 })
-export class CourseListComponent implements OnInit {
+export class CourseListComponent implements OnInit, OnDestroy {
   courses: Observable<Course[]>;
   searchQuery: string;
+  sub: Subscription;
 
   constructor(
     private coursesService: CoursesService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
     this.courses = this.coursesService.getCourses();
+  }
+
+  // tslint:disable-next-line
+  ngOnDestroy() {
   }
 
   findCourse(value: string): void {
@@ -26,10 +35,11 @@ export class CourseListComponent implements OnInit {
   }
 
   addCourse(): void {
-    this.coursesService.addCourse();
+    this.router.navigate(['courses/add']);
   }
 
   deleteCourse(id: string): void {
-    this.coursesService.deleteCourse(id);
+    this.sub = this.coursesService.confirmDeletion(id)
+      .subscribe();
   }
 }
