@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../../core/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   templateUrl: './course-form.component.html',
   styleUrls: ['./course-form.component.scss']
 })
-export class CourseFormComponent implements OnInit {
+export class CourseFormComponent implements OnInit, OnDestroy {
   courseForm: FormGroup;
   sub: Subscription;
   currentCourse: Course;
@@ -39,6 +39,10 @@ export class CourseFormComponent implements OnInit {
     } else {
       this.createAddForm();
     }
+  }
+
+  ngOnDestroy() {
+    this.coursesService.setActiveCourse(undefined);
   }
 
   onSubmit(): void {
