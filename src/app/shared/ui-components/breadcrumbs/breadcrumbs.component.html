@@ -1,3 +1,4 @@
 <div class="breadcrumb mb-0">
-  <div class="">Courses</div>
+  <a routerLink="courses">Courses</a>
+  <span *ngIf="currentCourse">&nbsp;/ {{ currentCourse.title }}</span>
 </div>

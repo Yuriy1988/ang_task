@@ -1,20 +1,31 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CourseListComponent } from './course-list/course-list.component';
-import { AddCourseComponent } from './add-course/add-course.component';
 import { AuthGuard } from '../core/auth/auth-guard.service';
+import { CourseListComponent } from './course-list/course-list.component';
+import { CourseFormComponent } from './course-form/course-form.component';
+import { CoursesPageComponent } from './courses-page/courses-page.component';
 
 const heroesRoutes: Routes = [
   {
     path: 'courses',
-    component: CourseListComponent,
-    canActivate: [AuthGuard],
+    component: CoursesPageComponent,
+    canActivate: [ AuthGuard ],
+    children: [
+      {
+        path: '',
+        component: CourseListComponent,
+      },
+      {
+        path: 'add',
+        component: CourseFormComponent
+      },
+      {
+        path: ':id',
+        component: CourseFormComponent
+      }
+    ],
   },
-  {
-    path: 'courses/add',
-    component: AddCourseComponent
-  }
 ];
 
 @NgModule({
@@ -23,6 +34,6 @@ const heroesRoutes: Routes = [
   ],
   exports: [
     RouterModule
-  ]
+  ],
 })
 export class CoursesRoutingModule { }

@@ -3,5 +3,8 @@
   flex-direction: column;
   flex: 1;
   overflow: auto;
-  padding: 10px 30px;
+
+  .course-list {
+    padding: 0 10px;
+  }
 }

@@ -10,11 +10,14 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
 import { RatingStarComponent } from './rating-star/rating-star.component';
+import { RouterModule } from '@angular/router';
+import { PageNotFoundComponent } from './pageNotFound/page-not-found.component';
 
 @NgModule({
   imports: [
     FormsModule,
     CommonModule,
+    RouterModule,
     ModalModule.forRoot(),
   ],
   declarations: [
@@ -25,6 +28,7 @@ import { RatingStarComponent } from './rating-star/rating-star.component';
     ToolboxComponent,
     RatingStarComponent,
     ConfirmModalComponent,
+    PageNotFoundComponent,
   ],
   entryComponents: [
     ConfirmModalComponent,

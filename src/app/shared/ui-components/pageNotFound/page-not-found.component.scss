@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  height: 91vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 10rem;
+
+  a {
+    font-size: 2rem;
+  }
+}

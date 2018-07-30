@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="btn-group-sm d-flex flex-column justify-content-center m-2">
-    <button class="btn badge-warning m-1">Edit</button>
+    <button (click)="onEdit(course.id)" class="btn badge-warning m-1">Edit</button>
     <button (click)="onDeleteCourse(course.id)" class="btn btn-danger m-1">Delete</button>
   </div>
 </div>

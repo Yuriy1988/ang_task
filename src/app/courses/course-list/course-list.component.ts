@@ -42,4 +42,8 @@ export class CourseListComponent implements OnInit, OnDestroy {
     this.sub = this.coursesService.confirmDeletion(id)
       .subscribe();
   }
+
+  goToEditPage(id: string): void {
+    this.router.navigate([`courses/${id}`]);
+  }
 }

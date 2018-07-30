@@ -5,10 +5,11 @@ import { CourseListComponent } from './course-list/course-list.component';
 import { CourseComponent } from './course/course.component';
 import { EmptyStateComponent } from './empty-state/empty-state.component';
 import { CoursesService } from './courses.service';
-import { AddCourseComponent } from './add-course/add-course.component';
+import { CourseFormComponent } from './course-form/course-form.component';
 import { CoursesRoutingModule } from './courses-routing.module';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CoursesPageComponent } from './courses-page/courses-page.component';
 
 
 @NgModule({
@@ -20,10 +21,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     BsDatepickerModule.forRoot()
   ],
   declarations: [
+    CoursesPageComponent,
     CourseListComponent,
     CourseComponent,
     EmptyStateComponent,
-    AddCourseComponent,
+    CourseFormComponent,
   ],
   providers: [
     CoursesService

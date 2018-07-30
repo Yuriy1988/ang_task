@@ -71,6 +71,7 @@ export class CoursesService {
   }
 
   courses = new BehaviorSubject<Course[]>(courses);
+  currentCourse: Course;
 
   getCourses(): Observable<Course[]> {
     return this.courses.asObservable();
@@ -91,7 +92,10 @@ export class CoursesService {
   }
 
   updateCourse(id: string, course: Course): void {
-    console.log(id, course);
+    courses = courses.map((c: Course) => (
+      c.id === id ? { ...c, ...course } : c
+    ));
+    this.courses.next(courses);
   }
 
   confirmDeletion(id): Observable<void> {
@@ -101,6 +105,10 @@ export class CoursesService {
         filter(Boolean),
         tap(() => this.deleteCourse(id)),
       );
+   }
+
+   setActiveCourse(id: string): void {
+    this.currentCourse = courses.find(c => c.id === id);
    }
 
   private deleteCourse(id: string): void {

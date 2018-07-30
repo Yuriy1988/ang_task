@@ -10,8 +10,13 @@ import { Course } from '../../shared/interfaces/course.model';
 export class CourseComponent {
   @Input () course: Course;
   @Output() deleteCourse = new EventEmitter<string>();
+  @Output() goToEditPage = new EventEmitter<string>();
 
   onDeleteCourse(id: string ): void {
     this.deleteCourse.emit(id);
+  }
+
+  onEdit(id: string): void {
+    this.goToEditPage.emit(id);
   }
 }

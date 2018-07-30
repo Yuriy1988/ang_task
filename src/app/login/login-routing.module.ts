@@ -7,11 +7,7 @@ const heroesRoutes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-  },
-  {
-    path: '**',
-    component: LoginComponent,
-  },
+  }
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 <app-breadcrumbs></app-breadcrumbs>
-<ng-container *ngIf="(courses | async | orderBy: 'creationDate' | filterBy: 'title' : searchQuery) as filtered">
+<div class="course-list" *ngIf="(courses | async | orderBy: 'creationDate' | filterBy: 'title' : searchQuery) as filtered">
   <app-toolbox
     (find)="findCourse($event)"
     (add)="addCourse()"
@@ -9,10 +9,11 @@
       [course]="course"
       [appDateWarning]="course.creationDate"
       (deleteCourse)="deleteCourse($event)"
+      (goToEditPage)="goToEditPage($event)"
    ></app-course>
    <ng-container *ngIf="!filtered.length">
     <app-empty-state></app-empty-state>
   </ng-container>
-</ng-container>
+</div>
 
 
