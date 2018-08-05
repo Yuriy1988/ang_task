@@ -1,119 +1,74 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import * as moment from 'moment';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { filter, scan, startWith, switchMap, first } from 'rxjs/operators';
+import { Subject } from 'rxjs/internal/Subject';
 import { Course } from '../shared/interfaces/course.model';
 import { ConfirmModalService } from '../shared/ui-components/confirm-modal/confirm-modal.service';
-import { filter, tap } from 'rxjs/operators';
-// tslint:disable-next-line
-const description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum';
-export let courses = [
-  {
-    id: 'id1',
-    title: 'title1',
-    creationDate: moment(Date.now()).add('5', 'day').toDate(),
-    duration: 100,
-    description,
-    topRated: true,
-  },
-  {
-    id: 'id2',
-    title: 'title2',
-    creationDate: moment(Date.now()).subtract('2', 'day').toDate(),
-    duration: 600,
-    description,
-    topRated: true,
-  },
-  {
-    id: 'id3',
-    title: 'title3',
-    creationDate: moment(Date.now()).subtract('110', 'day').toDate(),
-    duration: 200,
-    description,
-    topRated: false,
-  },
-  {
-    id: 'id4',
-    title: 'title4',
-    creationDate: moment(Date.now()).subtract('5', 'day').toDate(),
-    duration: 80,
-    description,
-    topRated: true,
-  },
-  {
-    id: 'id5',
-    title: 'title5',
-    creationDate: moment(Date.now()).subtract('11', 'day').toDate(),
-    duration: 11,
-    description,
-    topRated: false,
-  },
-  {
-    id: 'id6',
-    title: 'title5',
-    creationDate: moment(Date.now()).add('2', 'day').toDate(),
-    duration: 6,
-    description,
-    topRated: true,
-  },
-  {
-    id: 'id7',
-    title: 'title5',
-    creationDate: moment(Date.now()).add('11', 'day').toDate(),
-    duration: 3000,
-    description,
-    topRated: false,
-  },
-];
 
 @Injectable()
 export class CoursesService {
-  constructor(private confirmModalService: ConfirmModalService) {
-  }
+  static startFromCourseIndex = 0;
+  static coursesPerPage = 5;
 
-  courses = new BehaviorSubject<Course[]>(courses);
-  currentCourse: Course;
+  private baseUrl = 'courses';
+  pagination = new Subject();
+
+  constructor(
+    private confirmModalService: ConfirmModalService,
+    private httpClient: HttpClient,
+  ) { }
+
+  findCourse(query: string): Observable<Course[]> {
+    if (!query) {
+      return this.getCourses();
+    }
+    return this.httpClient.get<Course[]>(`${this.baseUrl}/?textFragment=${query}`);
+  }
 
   getCourses(): Observable<Course[]> {
-    return this.courses.asObservable();
+    return this.pagination.pipe(
+      startWith([CoursesService.startFromCourseIndex, CoursesService.coursesPerPage]),
+      scan((acc: [number, number]): [number, number] => {
+        return [acc[0] + CoursesService.coursesPerPage, CoursesService.coursesPerPage];
+      }),
+      switchMap(([start, count]: [number, number]): Observable<Course[]> => this.httpClient
+        .get<Course[]>(`${this.baseUrl}/?start=${start}&count=${count}`)
+      ),
+      scan((acc: Course[], received: Course[]): Course[] => {
+        return acc.concat(received);
+      }),
+    );
   }
 
-  addCourse(course: Course): void {
-    courses = courses.concat({
-      ...course,
-      id: String(Math.random()),
-      topRated: false,
-    });
-    this.courses.next(courses);
+  addCourse(course: Course): Observable<Course> {
+    return this.httpClient.post<Course>(this.baseUrl, course);
   }
 
   getCourseById(id: string): Observable<Course> {
-    const course = courses.find((c: Course) => c.id === id);
-    return of(course);
+    return this.httpClient.get<Course>(`${this.baseUrl}/${id}`);
   }
 
-  updateCourse(id: string, course: Course): void {
-    courses = courses.map((c: Course) => (
-      c.id === id ? { ...c, ...course } : c
-    ));
-    this.courses.next(courses);
+  updateCourse(id: string, course: Course): Observable<Course> {
+    return this.httpClient.patch<Course>(`${this.baseUrl}/${id}`, course);
   }
 
-  confirmDeletion(id): Observable<void> {
+  loadMore(): void {
+    this.pagination.next();
+  }
+
+  confirmDeletion(id): Observable<Course> {
     return this.confirmModalService
       .open()
       .pipe(
         filter(Boolean),
-        tap(() => this.deleteCourse(id)),
+        first(),
+        switchMap(() => this.deleteCourse(id)),
       );
-   }
+  }
 
-   setActiveCourse(id: string): void {
-    this.currentCourse = courses.find(c => c.id === id);
-   }
-
-  private deleteCourse(id: string): void {
-    courses = courses.filter(c => c.id !== id);
-    this.courses.next(courses);
+  private deleteCourse(id: string): Observable<Course> {
+    return this.httpClient.delete<Course>(`${this.baseUrl}/${id}`);
   }
 }
 

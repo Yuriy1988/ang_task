@@ -5,6 +5,7 @@ import { Course } from '../../shared/interfaces/course.model';
 import { CoursesService } from '../courses.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { tap } from 'rxjs/operators';
 
 @AutoUnsubscribe()
 @Component({
@@ -14,7 +15,6 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 })
 export class CourseListComponent implements OnInit, OnDestroy {
   courses: Observable<Course[]>;
-  searchQuery: string;
   sub: Subscription;
 
   constructor(
@@ -23,27 +23,39 @@ export class CourseListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.courses = this.coursesService.getCourses();
+    this.fetchCourses();
   }
 
   // tslint:disable-next-line
   ngOnDestroy() {
   }
 
-  findCourse(value: string): void {
-    this.searchQuery = value;
+  findCourse(query: string) {
+    this.courses = this.coursesService.findCourse(query);
   }
 
   addCourse(): void {
     this.router.navigate(['courses/add']);
   }
 
+
   deleteCourse(id: string): void {
     this.sub = this.coursesService.confirmDeletion(id)
+      .pipe(
+        tap(() => this.fetchCourses())
+      )
       .subscribe();
   }
 
   goToEditPage(id: string): void {
-    this.router.navigate([`courses/${id}`]);
+    this.router.navigate(['courses', id]);
+  }
+
+  loadMore(): void {
+    this.coursesService.loadMore();
+  }
+
+  private fetchCourses() {
+    this.courses = this.coursesService.getCourses();
   }
 }

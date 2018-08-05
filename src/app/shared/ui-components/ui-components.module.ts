@@ -12,6 +12,7 @@ import { FooterComponent } from './footer/footer.component';
 import { RatingStarComponent } from './rating-star/rating-star.component';
 import { RouterModule } from '@angular/router';
 import { PageNotFoundComponent } from './pageNotFound/page-not-found.component';
+import { LoadMoreComponent } from './load-more/load-more.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { PageNotFoundComponent } from './pageNotFound/page-not-found.component';
     RatingStarComponent,
     ConfirmModalComponent,
     PageNotFoundComponent,
+    LoadMoreComponent,
   ],
   entryComponents: [
     ConfirmModalComponent,
@@ -41,6 +43,7 @@ import { PageNotFoundComponent } from './pageNotFound/page-not-found.component';
     ToolboxComponent,
     RatingStarComponent,
     ConfirmModalComponent,
+    LoadMoreComponent,
   ],
 })
 export class UiComponentsModule { }

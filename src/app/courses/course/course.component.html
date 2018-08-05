@@ -2,11 +2,11 @@
   <div class="flex-grow-1">
     <div class="row">
       <div class="col-6 d-flex">
-          <div class="pr-2"> {{ course.title | uppercase }} </div>
-          <app-rating-star [isTopRated]="course.topRated"></app-rating-star>
+          <div class="pr-2"> {{ course.name | uppercase }} </div>
+          <app-rating-star [isTopRated]="course.isTopRated"></app-rating-star>
       </div>
-      <p class="col-2">{{ course.duration | duration }}</p>
-      <p class="col-2 text-right">{{ course.creationDate | date:'MM.dd.yyyy' }}</p>
+      <p class="col-2">{{ course.length | duration }}</p>
+      <p class="col-2 text-right">{{ course.date | date:'MM.dd.yyyy' }}</p>
     </div>
     <div class="text-justify">
       {{ course.description }}

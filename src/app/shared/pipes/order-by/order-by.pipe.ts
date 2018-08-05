@@ -8,7 +8,7 @@ import { Course } from '../../interfaces/course.model';
 export class OrderByPipe implements PipeTransform {
   transform(list: Course[], orderBy: string): Course[] {
     switch (orderBy) {
-      case 'creationDate':
+      case 'date':
         return this.orderByCreationDate(list);
       case 'topRated':
         return this.orderByRate(list);
@@ -18,8 +18,8 @@ export class OrderByPipe implements PipeTransform {
   }
 
   private orderByCreationDate(list): Course[] {
-    return list.sort((a, b) => {
-      return moment(a.creationDate).isSameOrAfter(b.creationDate)
+    return list && list.sort((a, b) => {
+      return moment(a.date).isSameOrAfter(b.date)
         ? 1
         : -1;
     });

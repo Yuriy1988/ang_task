@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AuthService } from '../../core/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoursesService } from '../courses.service';
-import { Course } from '../../shared/interfaces/course.model';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import * as moment from 'moment';
+import { AuthService } from '../../core/auth/auth.service';
+import { CoursesService } from '../courses.service';
+import { Course } from '../../shared/interfaces/course.model';
 
 @AutoUnsubscribe()
 @Component({
@@ -15,7 +16,8 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 })
 export class CourseFormComponent implements OnInit, OnDestroy {
   courseForm: FormGroup;
-  sub: Subscription;
+  courseSub: Subscription;
+  courseChangeSub: Subscription;
   currentCourse: Course;
   courseId: string;
 
@@ -30,8 +32,7 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     this.courseId = this.activatedRoute.snapshot.params.id;
 
     if (this.courseId) {
-      this.coursesService.setActiveCourse(this.courseId);
-      this.sub = this.coursesService.getCourseById(this.courseId)
+      this.courseSub = this.coursesService.getCourseById(this.courseId)
         .subscribe((course: Course): void => {
           this.currentCourse = course;
           this.createEditForm(course);
@@ -41,18 +42,22 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  // tslint:disable-next-line
   ngOnDestroy() {
-    this.coursesService.setActiveCourse(undefined);
   }
 
   onSubmit(): void {
     const course = this.courseForm.value;
+
     if (this.courseId) {
-      this.coursesService.updateCourse(this.courseId, course);
+      this.courseChangeSub = this.coursesService
+        .updateCourse(this.courseId, course)
+        .subscribe(() =>  this.goBack());
     } else {
-      this.coursesService.addCourse(course);
+      this.courseChangeSub = this.coursesService
+        .addCourse(course)
+        .subscribe(() =>  this.goBack());
     }
-    this.router.navigate(['../']);
   }
 
   onCancel(): void {
@@ -61,20 +66,24 @@ export class CourseFormComponent implements OnInit, OnDestroy {
 
   private createAddForm(): void {
     this.courseForm = new FormGroup ({
-      title: new FormControl(),
+      name: new FormControl(),
       description: new FormControl(),
-      creationDate: new FormControl(),
-      duration: new FormControl(),
+      date: new FormControl(),
+      length: new FormControl(),
     });
   }
 
   private createEditForm(course: Course): void {
     this.courseForm = new FormGroup ({
-      title: new FormControl(course.title),
+      name: new FormControl(course.name),
       description: new FormControl(course.description),
-      creationDate: new FormControl(course.creationDate),
-      duration: new FormControl(course.duration),
+      date: new FormControl(moment(course.date).toDate()),
+      length: new FormControl(course.length),
     });
+  }
+
+  private goBack(): void {
+    this.router.navigate(['../']);
   }
 }
 

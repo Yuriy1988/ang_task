@@ -17,16 +17,19 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.authService.getIsAuthenticated()) {
-      this.router.navigate(['courses']);
-    }
-
-    this.createLoginForm();
+    this.authService.getIsAuthenticated()
+      .subscribe((isAuthenticated) => {
+        isAuthenticated
+          ? this.router.navigate(['courses'])
+          : this.createLoginForm();
+      });
   }
 
   onSubmit(): void {
-    this.authService.login(this.loginForm.value.email);
-    this.router.navigate(['courses']);
+    this.authService.login(this.loginForm.value)
+      .subscribe(() => {
+        this.router.navigate(['courses']);
+      });
   }
 
   private createLoginForm(): void {

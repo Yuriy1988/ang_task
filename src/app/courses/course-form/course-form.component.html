@@ -1,16 +1,16 @@
 <app-breadcrumbs [currentCourse]="currentCourse"></app-breadcrumbs>
-<form [formGroup]="courseForm">
-  <div class="form-group">
-    <label for="title">Title</label>
+<form [formGroup]="courseForm" *ngIf="courseForm" class="row">
+  <div class="form-group col-8">
+    <label for="name">Name</label>
     <input
       type="text"
       class="form-control"
-      id="title"
-      placeholder="Title"
-      formControlName="title"
+      id="name"
+      placeholder="Name"
+      formControlName="name"
     >
   </div>
-  <div class="form-group">
+  <div class="form-group col-8">
     <label for="description">Description</label>
     <textarea
       class="form-control"
@@ -19,32 +19,32 @@
       formControlName="description"
     ></textarea>
   </div>
-  <div class="form-group">
+  <div class="form-group col-8">
     <label for="description">Date</label>
     <input
       placeholder="Datepicker"
       class="form-control"
       bsDatepicker
-      formControlName="creationDate"
+      formControlName="date"
     >
   </div>
-  <div class="form-group">
+  <div class="form-group col-8">
     <label for="duration">Duration, min</label>
     <input
       type="number"
       class="form-control"
       id="duration"
       placeholder="Duration"
-      formControlName="duration"
+      formControlName="length"
     >
-    <div>{{ courseForm.value.duration | duration }}</div>
+    <div>{{ courseForm.value.length | duration }}</div>
   </div>
-  <div class="btn-group">
+  <div class="btn-group col-8">
     <button
       type="submit"
       class="btn btn-primary"
       (click)="onSubmit()"
-      [disabled]="!courseForm.value.title"
+      [disabled]="!courseForm.value.name"
     >Save</button>
     <button
       type="submit"

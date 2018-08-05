@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { AuthService } from './core/auth/auth.service';
-import { User } from './core/auth/user.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -13,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  isAuthenticated: boolean;
   email: string;
 
   constructor(
@@ -22,10 +20,10 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.sub = this.authService.getUserInfo().subscribe(({ isAuthenticated, email }: User): void => {
-      this.isAuthenticated = isAuthenticated;
-      this.email = email;
-    });
+    this.sub = this.authService.getUserInfo()
+      .subscribe(({ email }): void => {
+        this.email = email;
+      });
   }
 
   logout(): void {

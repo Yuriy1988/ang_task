@@ -1,6 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
-import { CoursesService } from '../courses.service';
-import { Course } from '../../shared/interfaces/course.model';
+import { Component } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 @AutoUnsubscribe()
@@ -9,15 +7,6 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   templateUrl: './courses-page.component.html',
   styleUrls: ['./courses-page.component.scss']
 })
-export class CoursesPageComponent implements OnChanges {
-  currentCourse: Course;
+export class CoursesPageComponent {
 
-  constructor(
-    private coursesService: CoursesService,
-  ) {}
-
-  ngOnChanges() {
-    this.currentCourse = this.coursesService.currentCourse;
-    console.log('111111111111111111', this.currentCourse)
-  }
 }
