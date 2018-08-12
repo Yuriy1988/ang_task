@@ -6,7 +6,7 @@ import { CoursesModule } from './courses/courses.module';
 import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app-routing/app-routing.module';
-import { AuthInterceptor } from './core/auth/auth-interceptor.service';
+import { HTTPInterceptor } from './core/auth/http-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,7 @@ import { AuthInterceptor } from './core/auth/auth-interceptor.service';
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
+    useClass: HTTPInterceptor,
     multi: true,
   }],
   bootstrap: [AppComponent]

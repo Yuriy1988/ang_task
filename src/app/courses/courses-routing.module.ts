@@ -6,7 +6,7 @@ import { CourseListComponent } from './course-list/course-list.component';
 import { CourseFormComponent } from './course-form/course-form.component';
 import { CoursesPageComponent } from './courses-page/courses-page.component';
 
-const heroesRoutes: Routes = [
+const courseRoutes: Routes = [
   {
     path: 'courses',
     component: CoursesPageComponent,
@@ -30,7 +30,7 @@ const heroesRoutes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forChild(heroesRoutes)
+    RouterModule.forChild(courseRoutes),
   ],
   exports: [
     RouterModule

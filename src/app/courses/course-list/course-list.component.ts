@@ -15,7 +15,8 @@ import { tap } from 'rxjs/operators';
 })
 export class CourseListComponent implements OnInit, OnDestroy {
   courses: Observable<Course[]>;
-  sub: Subscription;
+  deletionSub: Subscription;
+  searchSub: Subscription;
 
   constructor(
     private coursesService: CoursesService,
@@ -30,8 +31,11 @@ export class CourseListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  findCourse(query: string) {
-    this.courses = this.coursesService.findCourse(query);
+  findCourse(query: Observable<string>) {
+    this.searchSub = this.coursesService.findCourse(query)
+      .subscribe((result) => {
+        this.courses = result;
+      });
   }
 
   addCourse(): void {
@@ -40,9 +44,9 @@ export class CourseListComponent implements OnInit, OnDestroy {
 
 
   deleteCourse(id: string): void {
-    this.sub = this.coursesService.confirmDeletion(id)
+    this.deletionSub = this.coursesService.confirmDeletion(id)
       .pipe(
-        tap(() => this.fetchCourses())
+        tap(() => this.fetchCourses()),
       )
       .subscribe();
   }
