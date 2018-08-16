@@ -154,7 +154,7 @@
       }
     ],
     "type-literal-delimiter": true,
-    "only-arrow-functions": true,
+    "only-arrow-functions": false,
     "prefer-for-of": true,
     "promise-function-async": true,
     "no-return-await": true,
@@ -185,7 +185,7 @@
       300
     ],
     "linebreak-style": [
-      true,
+      false,
       "LF"
     ],
     "defocus": true

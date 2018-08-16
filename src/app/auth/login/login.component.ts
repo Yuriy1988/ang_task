@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { AuthService } from '../../core/auth/auth.service';
 import { Router } from '@angular/router';
+import * as auth from '../auth.reducer';
+import { Login } from '../auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private store: Store<auth.State>
   ) {}
 
   ngOnInit() {
@@ -26,10 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.authService.login(this.loginForm.value)
-      .subscribe(() => {
-        this.router.navigate(['courses']);
-      });
+    this.store.dispatch(new Login(this.loginForm.value));
   }
 
   private createLoginForm(): void {
