@@ -37,4 +37,8 @@ export class LoginRedirect implements Action {
 }
 
 
-export type AuthActionsUnion = Login | Logout;
+export type AuthActionsUnion = Login
+  | Logout
+  | LoginSuccess
+  | LoginFailure
+  | LoginRedirect;

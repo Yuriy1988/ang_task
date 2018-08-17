@@ -17,13 +17,15 @@ export function reducer(
   action: AuthActionsUnion
 ): State {
   switch (action.type) {
-    case AuthActionTypes.login:
+    case AuthActionTypes.LoginSuccess:
       return {
-        user: action.payload,
+        ...state,
+        user: action.payload.user,
       };
 
-    case AuthActionTypes.logout:
+    case AuthActionTypes.Logout:
       return {
+        ...state,
         user: undefined,
       };
 

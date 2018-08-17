@@ -15,17 +15,7 @@ import {
 
 import { Action } from '@ngrx/store';
 import { User } from '../core/auth/user.model';
-
-.pipe(
-  map(([ user ]: [ User ]): boolean => {
-    if (user) {
-      this.setUserInfo(user);
-      return true;
-    }
-
-    return false;
-  })
-);
+import { AuthService } from '../core/auth/auth.service';
 
 @Injectable()
 export class AuthEffects {
@@ -37,28 +27,29 @@ export class AuthEffects {
       this.authService.login(auth).pipe(
         map((user: User) => {
           if (user) {
-            return  new LoginSuccess({ user });
+            return new LoginSuccess({ user });
           }
 
-          return  new LoginFailure();
+          return new LoginFailure();
         }),
         catchError(error => of(new LoginFailure(error)))
-      )
-    )
+      ),
+    ),
+  );
+
+  @Effect({ dispatch: false })
+  logout = this.actions.pipe(
+    ofType<Login>(AuthActionTypes.Logout),
+    tap(() => {
+      localStorage.setItem('email', '');
+      localStorage.setItem('fakeToken', '');
+    }),
   );
 
   @Effect({ dispatch: false })
   loginSuccess = this.actions.pipe(
     ofType(AuthActionTypes.LoginSuccess),
     tap(() => this.router.navigate(['/']))
-  );
-
-  @Effect({ dispatch: false })
-  loginRedirect = this.actions.pipe(
-    ofType(AuthActionTypes.LoginRedirect, AuthActionTypes.Logout),
-    tap(authed => {
-      this.router.navigate(['/login']);
-    })
   );
 
   constructor(
