@@ -3,8 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AuthService } from '../../core/auth/auth.service';
 import { Router } from '@angular/router';
-import * as auth from '../auth.reducer';
 import { Login } from '../auth.actions';
+import { AppState } from '../../store-configuration';
 
 @Component({
   selector: 'app-login',
@@ -17,16 +17,11 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private store: Store<auth.State>
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
-    this.authService.getIsAuthenticated()
-      .subscribe((isAuthenticated) => {
-        isAuthenticated
-          ? this.router.navigate(['courses'])
-          : this.createLoginForm();
-      });
+    this.createLoginForm();
   }
 
   onSubmit(): void {

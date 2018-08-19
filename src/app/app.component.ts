@@ -1,8 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { AuthService } from './core/auth/auth.service';
-import { Subscription } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs/internal/Observable';
 import { Router } from '@angular/router';
+import * as auth from './auth/auth.reducer';
+import { AuthService } from './core/auth/auth.service';
+import { Logout } from './auth/auth.actions';
 
 @AutoUnsubscribe()
 @Component({
@@ -10,28 +13,21 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  sub: Subscription;
-  email: string;
+export class AppComponent implements OnInit {
+  email: Observable<string>;
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store<auth.AuthState>
   ) {}
 
   ngOnInit() {
-    this.sub = this.authService.getUserInfo()
-      .subscribe(({ email }): void => {
-        this.email = email;
-      });
+    this.email = this.store.pipe(select(auth.getUserEmail));
   }
 
   logout(): void {
-    this.authService.logout();
+    this.store.dispatch(new Logout());
     this.router.navigate(['/login']);
-  }
-
-  // tslint:disable-next-line
-  ngOnDestroy() {
   }
 }

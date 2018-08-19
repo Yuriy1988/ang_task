@@ -1,7 +1,7 @@
 import {
   AuthActionTypes,
   AuthActionsUnion,
-} from './auth.actions';
+} from './courses.actions';
 import { User } from '../core/auth/user.model';
 import { createSelector } from '@ngrx/store';
 import { AppState } from '../store-configuration';

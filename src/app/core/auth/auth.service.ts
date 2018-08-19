@@ -1,9 +1,7 @@
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 import { User } from './user.model';
-import { of } from 'rxjs/internal/observable/of';
 
 @Injectable()
 export class AuthService {
@@ -23,11 +21,6 @@ export class AuthService {
         fakeToken: String(Date.now())
       },
     );
-  }
-
-  logout(): void {
-    localStorage.setItem('email', '');
-    localStorage.setItem('fakeToken', '');
   }
 }
 

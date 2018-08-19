@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --aot",
+    "start": "ng serve",
     "build": "ng build --aot",
     "test": "ng test",
     "lint": "ng lint",
@@ -32,6 +32,7 @@
     "ngrx-store-freeze": "^0.2.4",
     "ngx-auto-unsubscribe": "^2.4.1",
     "ngx-bootstrap": "~3.0.1",
+    "ramda": "^0.25.0",
     "rxjs": "^6.2.2",
     "zone.js": "^0.8.26"
   },

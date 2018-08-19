@@ -12,7 +12,7 @@ import {
   LoginFailure,
   RegisterSuccess,
   RegisterFailure,
-} from './auth.actions';
+} from './courses.actions';
 
 import { User } from '../core/auth/user.model';
 import { AuthService } from '../core/auth/auth.service';
