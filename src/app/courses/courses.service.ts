@@ -23,33 +23,13 @@ export class CoursesService {
     private httpClient: HttpClient,
   ) { }
 
-  findCourse(query: Observable<string>): Observable<Observable<Course[]>> {
-    return query.pipe(
-      filter(q => q && q.length > minSearchLength || !q),
-      debounce(() => interval(debounce_time)),
-      map((q) => {
-        console.log(q);
-        if (!q) {
-          return this.getCourses();
-        }
-        return this.httpClient.get<Course[]>(`${this.baseUrl}/?textFragment=${q}`);
-      })
-    );
+  findCourse(query): Observable<Course[]> {
+    return this.httpClient.get<Course[]>(`${this.baseUrl}/?textFragment=${query}`);
   }
 
-  getCourses(): Observable<Course[]> {
-    return this.pagination.pipe(
-      startWith([CoursesService.startFromCourseIndex, CoursesService.coursesPerPage]),
-      scan((acc: [number, number]): [number, number] => {
-        return [acc[0] + CoursesService.coursesPerPage, CoursesService.coursesPerPage];
-      }),
-      switchMap(([start, count]: [number, number]): Observable<Course[]> => this.httpClient
-        .get<Course[]>(`${this.baseUrl}/?start=${start}&count=${count}`)
-      ),
-      scan((acc: Course[], received: Course[]): Course[] => {
-        return acc.concat(received);
-      }),
-    );
+  fetchCourses(start = 0, count = 5): Observable<Course[]> {
+    return this.httpClient
+      .get<Course[]>(`${this.baseUrl}/?start=${start}&count=${count}`);
   }
 
   addCourse(course: Course): Observable<Course> {
@@ -60,7 +40,7 @@ export class CoursesService {
     return this.httpClient.get<Course>(`${this.baseUrl}/${id}`);
   }
 
-  updateCourse(id: string, course: Course): Observable<Course> {
+  updateCourse(id: number, course: Course): Observable<Course> {
     return this.httpClient.patch<Course>(`${this.baseUrl}/${id}`, course);
   }
 
@@ -68,13 +48,13 @@ export class CoursesService {
     this.pagination.next();
   }
 
-  confirmDeletion(id): Observable<Course> {
+  confirmDeletion(id): Observable<string> {
     return this.confirmModalService
       .open()
       .pipe(
         filter(Boolean),
         first(),
-        switchMap(() => this.deleteCourse(id)),
+        map(() => id),
       );
   }
 

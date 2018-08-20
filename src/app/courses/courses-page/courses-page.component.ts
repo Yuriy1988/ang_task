@@ -7,6 +7,4 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   templateUrl: './courses-page.component.html',
   styleUrls: ['./courses-page.component.scss']
 })
-export class CoursesPageComponent {
-
-}
+export class CoursesPageComponent { }

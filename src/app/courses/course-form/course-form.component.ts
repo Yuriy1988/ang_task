@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -7,6 +7,9 @@ import * as moment from 'moment';
 import { AuthService } from '../../core/auth/auth.service';
 import { CoursesService } from '../courses.service';
 import { Course } from '../../shared/interfaces/course.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store-configuration';
+import { AddCourse, EditCourse } from '../courses.actions';
 
 @AutoUnsubscribe()
 @Component({
@@ -14,10 +17,9 @@ import { Course } from '../../shared/interfaces/course.model';
   templateUrl: './course-form.component.html',
   styleUrls: ['./course-form.component.scss']
 })
-export class CourseFormComponent implements OnInit, OnDestroy {
+export class CourseFormComponent implements OnInit {
   courseForm: FormGroup;
   courseSub: Subscription;
-  courseChangeSub: Subscription;
   currentCourse: Course;
   courseId: string;
 
@@ -26,6 +28,7 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private coursesService: CoursesService,
     private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>,
   ) {}
 
   ngOnInit() {
@@ -42,26 +45,20 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  // tslint:disable-next-line
-  ngOnDestroy() {
-  }
-
   onSubmit(): void {
     const course = this.courseForm.value;
 
     if (this.courseId) {
-      this.courseChangeSub = this.coursesService
-        .updateCourse(this.courseId, course)
-        .subscribe(() =>  this.goBack());
+      this.store.dispatch(new EditCourse({ id: Number(this.courseId), course }));
+      this.goBack();
     } else {
-      this.courseChangeSub = this.coursesService
-        .addCourse(course)
-        .subscribe(() =>  this.goBack());
+      this.store.dispatch(new AddCourse({ course }));
+      this.goBack();
     }
   }
 
   onCancel(): void {
-    this.router.navigate(['../']);
+    this.goBack();
   }
 
   private createAddForm(): void {

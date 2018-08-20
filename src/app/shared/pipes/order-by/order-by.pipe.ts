@@ -18,7 +18,7 @@ export class OrderByPipe implements PipeTransform {
   }
 
   private orderByCreationDate(list): Course[] {
-    return list && list.sort((a, b) => {
+    return list && [...list].sort((a, b) => {
       return moment(a.date).isSameOrAfter(b.date)
         ? 1
         : -1;

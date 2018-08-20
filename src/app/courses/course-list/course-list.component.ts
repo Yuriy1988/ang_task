@@ -5,7 +5,15 @@ import { Course } from '../../shared/interfaces/course.model';
 import { CoursesService } from '../courses.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../store-configuration';
+import {
+  DeleteCourse,
+  FetchCourses,
+  FetchMore,
+  FindCourses
+} from '../courses.actions';
+import * as courses from '../courses.reducer';
 
 @AutoUnsubscribe()
 @Component({
@@ -21,10 +29,11 @@ export class CourseListComponent implements OnInit, OnDestroy {
   constructor(
     private coursesService: CoursesService,
     private router: Router,
+    private store: Store<AppState>,
   ) {}
 
   ngOnInit() {
-    this.fetchCourses();
+    this.getCourses();
   }
 
   // tslint:disable-next-line
@@ -32,23 +41,16 @@ export class CourseListComponent implements OnInit, OnDestroy {
   }
 
   findCourse(query: Observable<string>) {
-    this.searchSub = this.coursesService.findCourse(query)
-      .subscribe((result) => {
-        this.courses = result;
-      });
+   this.store.dispatch(new FindCourses({ query }));
   }
 
   addCourse(): void {
     this.router.navigate(['courses/add']);
   }
 
-
   deleteCourse(id: string): void {
     this.deletionSub = this.coursesService.confirmDeletion(id)
-      .pipe(
-        tap(() => this.fetchCourses()),
-      )
-      .subscribe();
+      .subscribe(() => this.store.dispatch(new DeleteCourse({ id })));
   }
 
   goToEditPage(id: string): void {
@@ -56,10 +58,13 @@ export class CourseListComponent implements OnInit, OnDestroy {
   }
 
   loadMore(): void {
-    this.coursesService.loadMore();
+    this.store.dispatch(new FetchMore());
   }
 
-  private fetchCourses() {
-    this.courses = this.coursesService.getCourses();
+  private getCourses = () => {
+    this.store.dispatch(new FetchCourses());
+    this.courses = this.store.pipe(
+      select(courses.getCourses),
+    );
   }
 }

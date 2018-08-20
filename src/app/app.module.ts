@@ -10,8 +10,9 @@ import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HTTPInterceptor } from './core/auth/http-interceptor.service';
-import { metaReducers, reducers } from './store-configuration';
+import { reducers } from './store-configuration';
 import { AuthEffects } from './auth/auth.effects';
+import { CoursesEffects } from './courses/courses.effects';
 
 
 @NgModule({
@@ -25,8 +26,11 @@ import { AuthEffects } from './auth/auth.effects';
     CoursesModule,
     AuthModule,
     AppRoutingModule,
-    [EffectsModule.forRoot([ AuthEffects ])],
-    StoreModule.forRoot(reducers, { metaReducers }),
+    [EffectsModule.forRoot([
+      AuthEffects,
+      CoursesEffects
+    ])],
+    StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),

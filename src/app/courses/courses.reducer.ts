@@ -1,34 +1,63 @@
-import {
-  AuthActionTypes,
-  AuthActionsUnion,
-} from './courses.actions';
-import { User } from '../core/auth/user.model';
 import { createSelector } from '@ngrx/store';
 import { AppState } from '../store-configuration';
+import { Course } from '../shared/interfaces/course.model';
+import { CoursesActionsUnion, CoursesActionTypes, EditSuccess } from './courses.actions';
 
-export interface AuthState {
-  user: User;
+export interface CoursesState {
+  courseList: Course[];
+  pagination: {
+    currentPage: number;
+    itemsPerPage: number;
+  };
 }
 
-const initialState: AuthState = {
-  user: undefined,
+const initialState: CoursesState = {
+  courseList: [],
+  pagination: {
+    currentPage: 0,
+    itemsPerPage: 5,
+  },
 };
 
 export function reducer(
-  state: AuthState = initialState,
-  action: AuthActionsUnion
-): AuthState {
+  state: CoursesState = initialState,
+  action: CoursesActionsUnion,
+): CoursesState {
   switch (action.type) {
-    case AuthActionTypes.LoginSuccess:
+    case CoursesActionTypes.ReceivedCourses:
       return {
         ...state,
-        user: action.payload.user,
+        courseList: action.payload.courses,
       };
 
-    case AuthActionTypes.Logout:
+    case CoursesActionTypes.ReceivedMoreCourses:
       return {
         ...state,
-        user: undefined,
+        courseList: state.courseList.concat(action.payload.courses),
+      };
+
+    case CoursesActionTypes.Paginate:
+      return {
+        ...state,
+        pagination: {
+          ...state.pagination,
+          currentPage: action.payload.offset,
+        },
+      };
+
+    case CoursesActionTypes.DeleteCourseSuccess:
+      return {
+        ...state,
+        courseList: state.courseList.filter(c => c.id !== action.payload.id),
+      };
+
+    case CoursesActionTypes.EditSuccess:
+      return {
+        ...state,
+        courseList: state.courseList.map(c => c.id === action.payload.course.id
+          ? action.payload.course
+          : c
+        ),
       };
 
     default:
@@ -36,18 +65,9 @@ export function reducer(
   }
 }
 
-export const selectUser = (state: AppState) => state.auth.user;
+export const selectCourses = (state: AppState) => state.courses.courseList;
 
-export const getUser = createSelector(
-  selectUser,
+export const getCourses = createSelector(
+  selectCourses,
 );
 
-export const getUserEmail = createSelector(
-  selectUser,
-  (user) => user && user.email,
-);
-
-export const isAuthenticated = createSelector(
-  selectUser,
-  (user) => Boolean(user && user.fakeToken),
-);
