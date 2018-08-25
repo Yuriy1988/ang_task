@@ -1,0 +1,11 @@
+
+<ng-select
+  items]="authors | async"
+  bindLabel="name"
+  bindValue="id"
+  labelForId="state"
+  [multiple]="true"
+  placeholder="Select cities"
+  clearAllText="Clear"
+  formControlName="selectedAuthors">
+</ng-select>

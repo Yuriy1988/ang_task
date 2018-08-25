@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
@@ -10,6 +10,10 @@ import { Course } from '../../shared/interfaces/course.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store-configuration';
 import { AddCourse, EditCourse } from '../courses.actions';
+
+const MAX_TITLE_LENGTH = 50;
+const MAX_DESCRIPTION_LENGTH = 500;
+const NUMBERS_ONLY_REGEXP = '^[0-9]*$';
 
 @AutoUnsubscribe()
 @Component({
@@ -72,10 +76,18 @@ export class CourseFormComponent implements OnInit {
 
   private createEditForm(course: Course): void {
     this.courseForm = new FormGroup ({
-      name: new FormControl(course.name),
-      description: new FormControl(course.description),
-      date: new FormControl(moment(course.date).toDate()),
-      length: new FormControl(course.length),
+      name: new FormControl(course.name, [
+        Validators.required,
+        Validators.maxLength(MAX_TITLE_LENGTH)]
+      ),
+      description: new FormControl(course.description, [
+        Validators.required,
+        Validators.maxLength(MAX_DESCRIPTION_LENGTH)
+      ]),
+      date: new FormControl(moment(course.date).toDate(), [
+        Validators.required
+      ]),
+      length: new FormControl(course.length)
     });
   }
 
@@ -83,4 +95,3 @@ export class CourseFormComponent implements OnInit {
     this.router.navigate(['../']);
   }
 }
-

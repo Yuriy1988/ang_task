@@ -155,6 +155,12 @@
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.1.1.tgz#b2c8d73675e349062112c2795a6e9e146bf47e1e"
 
+"@ng-select/ng-select@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@ng-select/ng-select/-/ng-select-2.5.0.tgz#8a8e2ce67c1c1f51bfb6c59af885b1cfafbc65aa"
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngrx/effects@^6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-6.1.0.tgz#3c1e1ab1e5a86c6d9c29d4f3771e42cc9bd8576c"

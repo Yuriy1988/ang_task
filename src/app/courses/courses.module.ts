@@ -8,9 +8,11 @@ import { CoursesService } from './courses.service';
 import { CourseFormComponent } from './course-form/course-form.component';
 import { CoursesRoutingModule } from './courses-routing.module';
 import { BsDatepickerModule } from 'ngx-bootstrap';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CoursesPageComponent } from './courses-page/courses-page.component';
-
+import { CustomValidatorDirective } from './course-form/custom-validator.directive';
+import { MultiSelectComponent } from './course-form/multi-select.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -18,14 +20,18 @@ import { CoursesPageComponent } from './courses-page/courses-page.component';
     ModalModule,
     CoursesRoutingModule,
     ReactiveFormsModule,
+    NgSelectModule,
+    FormsModule,
     BsDatepickerModule.forRoot()
   ],
   declarations: [
+    CustomValidatorDirective,
     CoursesPageComponent,
     CourseListComponent,
     CourseComponent,
     EmptyStateComponent,
     CourseFormComponent,
+    MultiSelectComponent,
   ],
   providers: [
     CoursesService
