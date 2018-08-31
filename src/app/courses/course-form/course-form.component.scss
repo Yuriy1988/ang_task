@@ -9,4 +9,12 @@
     justify-content: center;
     align-items: center;
   }
+
+  .error {
+    border: 2px solid red;
+  }
+
+  .errorMsg {
+    color: red;
+  }
 }

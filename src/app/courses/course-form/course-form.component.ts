@@ -14,10 +14,8 @@ import { AddCourse, EditCourse } from '../courses.actions';
 import { Author } from '../../shared/interfaces/author.model';
 import * as courses from '../courses.reducer';
 
-
 const MAX_TITLE_LENGTH = 50;
 const MAX_DESCRIPTION_LENGTH = 500;
-const NUMBERS_ONLY_REGEXP = '^[0-9]*$';
 
 @AutoUnsubscribe()
 @Component({
@@ -75,28 +73,37 @@ export class CourseFormComponent implements OnInit {
 
   private createAddForm(): void {
     this.courseForm = new FormGroup ({
-      name: new FormControl(),
-      description: new FormControl(),
-      date: new FormControl(),
-      length: new FormControl(),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(MAX_TITLE_LENGTH),
+      ]),
+      description: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(MAX_DESCRIPTION_LENGTH)
+      ]),
+      date: new FormControl('', [Validators.required]),
+      length: new FormControl('', Validators.required),
+      authors: new FormControl('', Validators.required),
     });
   }
 
   private createEditForm(course: Course): void {
     this.courseForm = new FormGroup ({
-      name: new FormControl(course.name, [
-        Validators.required,
-        Validators.maxLength(MAX_TITLE_LENGTH)]
-      ),
-      description: new FormControl(course.description, [
-        Validators.required,
-        Validators.maxLength(MAX_DESCRIPTION_LENGTH)
-      ]),
-      date: new FormControl(moment(course.date).toDate(), [
-        Validators.required
-      ]),
-      length: new FormControl(course.length)
-    });
+        name: new FormControl(course.name, [
+          Validators.required,
+          Validators.maxLength(MAX_TITLE_LENGTH)]
+        ),
+        description: new FormControl(course.description, [
+          Validators.required,
+          Validators.maxLength(MAX_DESCRIPTION_LENGTH)
+        ]),
+        date: new FormControl(moment(course.date).toDate(), [
+          Validators.required
+        ]),
+        length: new FormControl(course.length, Validators.required),
+        authors: new FormControl(course.authors, Validators.required),
+      }
+    );
   }
 
   private goBack(): void {

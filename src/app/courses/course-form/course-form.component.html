@@ -1,8 +1,14 @@
 <app-breadcrumbs [currentCourse]="currentCourse"></app-breadcrumbs>
 <form [formGroup]="courseForm" *ngIf="courseForm" class="row">
   <div class="form-group col-8">
+    <div *ngIf="courseForm.controls['name'].dirty">
+      <span class="errorMsg" *ngIf="courseForm.controls['name'].errors?.required">Required Field</span>
+      <span class="errorMsg" *ngIf="courseForm.controls['name'].errors?.maxlength">Max length is 50</span>
+    </div>
     <label for="name">Name</label>
     <input
+      [ngClass]="{'error': courseForm.controls['name'].invalid && courseForm.controls['name'].dirty }"
+      ngClass=""
       type="text"
       class="form-control"
       id="name"
@@ -11,8 +17,13 @@
     >
   </div>
   <div class="form-group col-8">
+    <div *ngIf="courseForm.controls['description'] as desc">
+      <span class="errorMsg" *ngIf="desc.dirty && desc.errors?.required">Required Field</span>
+      <span class="errorMsg" *ngIf="desc.dirty && desc.errors?.maxlength">Max length is 500</span>
+    </div>
     <label for="description">Description</label>
     <textarea
+      [ngClass]="{'error': courseForm.controls['description'].invalid && courseForm.controls['description'].dirty }"
       class="form-control"
       id="description"
       rows="3"
@@ -22,6 +33,7 @@
   <div class="form-group col-8">
     <label for="description">Date</label>
     <input
+      [ngClass]="{'error': courseForm.controls['date'].invalid && courseForm.controls['date'].dirty }"
       placeholder="Datepicker"
       class="form-control"
       bsDatepicker
@@ -29,8 +41,12 @@
     >
   </div>
   <div class="form-group col-8">
+    <div *ngIf="courseForm.controls['length'] as len">
+      <span class="errorMsg" *ngIf="len.dirty && len.errors?.required">Required Field</span>
+    </div>
     <label for="duration">Duration, min</label>
     <input
+      [ngClass]="{'error': courseForm.controls['length'].invalid && courseForm.controls['length'].dirty }"
       appCustomValidator
       type="number"
       class="form-control"
@@ -40,17 +56,21 @@
     >
     <div>{{ courseForm.value.length | duration }}</div>
   </div>
+  <div *ngIf="courseForm.controls['authors'] as authtors">
+    <span class="errorMsg" *ngIf="authtors.dirty && authtors.errors?.required">Required Field</span>
+  </div>
   <app-multi-select
     *ngIf="authors | async as items"
     [selectedItems]="selectedAuthors"
     [items]="items"
+    [control]="courseForm.controls['authors']"
   ></app-multi-select>
   <div class="btn-group col-8">
     <button
       type="submit"
       class="btn btn-primary"
       (click)="onSubmit()"
-      [disabled]="!courseForm.value.name"
+      [disabled]="!courseForm.value.name || courseForm.invalid || courseForm.pristine"
     >Save</button>
     <button
       type="submit"

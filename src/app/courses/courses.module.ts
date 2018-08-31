@@ -11,7 +11,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CoursesPageComponent } from './courses-page/courses-page.component';
 import { CustomValidatorDirective } from './course-form/custom-validator.directive';
-import { MultiSelectComponent } from './course-form/multi-select.component';
+import { MultiSelectComponent } from './course-form/multi-select/multi-select.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({

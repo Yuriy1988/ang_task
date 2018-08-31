@@ -1,6 +1,5 @@
-import { Observable } from 'rxjs/internal/Observable';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-multi-select',
@@ -9,17 +8,12 @@ import { FormControl, FormGroup } from '@angular/forms';
   encapsulation: ViewEncapsulation.None,
 })
 export class MultiSelectComponent implements OnInit {
-  @Input() itemsName: string;
+  @Input() itemsName = 'Authors';
   @Input() items: object[];
   @Input() selectedItems: object[];
-  form: FormGroup;
+  @Input() control: AbstractControl;
 
   ngOnInit() {
-    const selectedItems = new FormControl(this.selectedItems);
-
-    this.form = new FormGroup({
-      selectedItems,
-    });
   }
 }
 
