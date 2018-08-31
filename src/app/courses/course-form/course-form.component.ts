@@ -2,14 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { Observable } from 'rxjs/internal/Observable';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import * as moment from 'moment';
 import { AuthService } from '../../core/auth/auth.service';
 import { CoursesService } from '../courses.service';
 import { Course } from '../../shared/interfaces/course.model';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../store-configuration';
 import { AddCourse, EditCourse } from '../courses.actions';
+import { Author } from '../../shared/interfaces/author.model';
+import * as courses from '../courses.reducer';
+
 
 const MAX_TITLE_LENGTH = 50;
 const MAX_DESCRIPTION_LENGTH = 500;
@@ -24,7 +28,9 @@ const NUMBERS_ONLY_REGEXP = '^[0-9]*$';
 export class CourseFormComponent implements OnInit {
   courseForm: FormGroup;
   courseSub: Subscription;
+  selectedAuthors: Author[];
   currentCourse: Course;
+  authors: Observable<Author[]>;
   courseId: string;
 
   constructor(
@@ -37,11 +43,13 @@ export class CourseFormComponent implements OnInit {
 
   ngOnInit() {
     this.courseId = this.activatedRoute.snapshot.params.id;
+    this.authors = this.store.pipe(select(courses.getAuthors));
 
     if (this.courseId) {
       this.courseSub = this.coursesService.getCourseById(this.courseId)
         .subscribe((course: Course): void => {
           this.currentCourse = course;
+          this.selectedAuthors = course.authors;
           this.createEditForm(course);
         });
     } else {

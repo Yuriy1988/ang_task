@@ -17,7 +17,10 @@ import {
   CrudSuccess,
   ReceivedMoreCourses,
   CrudFailure,
-  FindCourses, EditSuccess,
+  FindCourses,
+  EditSuccess,
+  FetchAuthors,
+  FetchAuthorsSuccess,
 } from './courses.actions';
 
 import { CoursesService } from './courses.service';
@@ -27,6 +30,7 @@ import { AppState } from '../store-configuration';
 import { CoursesState } from './courses.reducer';
 import { Observable } from 'rxjs/internal/Observable';
 import { interval } from 'rxjs/internal/observable/interval';
+import { Author } from '../shared/interfaces/author.model';
 
 const debounce_time = 300;
 const minSearchLength = 2;
@@ -41,6 +45,21 @@ export class CoursesEffects {
         map((courses: Course[]) => {
           if (courses) {
             return new ReceivedCourses({ courses });
+          }
+        }),
+        catchError(error => of(new CrudFailure(error)))
+      );
+    }),
+  );
+
+  @Effect()
+  fetchAuthors = this.actions.pipe(
+    ofType<FetchAuthors>(CoursesActionTypes.FetchAuthors),
+    exhaustMap(() => {
+      return this.coursesService.fetchAuthors().pipe(
+        map((authors: Author[]) => {
+          if (authors) {
+            return new FetchAuthorsSuccess({ authors });
           }
         }),
         catchError(error => of(new CrudFailure(error)))

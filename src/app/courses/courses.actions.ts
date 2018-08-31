@@ -2,8 +2,11 @@
 import { Action } from '@ngrx/store';
 import { Course } from '../shared/interfaces/course.model';
 import { Observable } from 'rxjs/internal/Observable';
+import { Author } from '../shared/interfaces/author.model';
 
 export enum CoursesActionTypes {
+  FetchAuthors = '[Courses] fetch authors',
+  FetchAuthorsSuccess = '[Courses] fetch authors success',
   FetchCourses = '[Courses] fetch',
   FindCourses = '[Courses] find',
   Paginate = '[Courses] paginate',
@@ -17,6 +20,16 @@ export enum CoursesActionTypes {
   CrudSuccess = '[Courses] success',
   CrudFailure =  '[Courses] failure',
   ReceivedMoreCourses = '[Courses] received more',
+}
+
+export class FetchAuthors implements Action {
+  readonly type = CoursesActionTypes.FetchAuthors;
+}
+
+export class FetchAuthorsSuccess implements Action {
+  readonly type = CoursesActionTypes.FetchAuthorsSuccess;
+
+  constructor(public payload: { authors: Author[] }) {}
 }
 
 export class FindCourses implements Action {
@@ -93,6 +106,8 @@ export class CrudFailure implements Action {
 
 
 export type CoursesActionsUnion = |
+  FetchAuthors |
+  FetchAuthorsSuccess |
   FetchCourses |
   Paginate |
   ReceivedCourses |

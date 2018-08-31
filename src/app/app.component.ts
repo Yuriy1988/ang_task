@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import * as auth from './auth/auth.reducer';
 import { AuthService } from './core/auth/auth.service';
 import { Logout } from './auth/auth.actions';
+import { FetchAuthors } from './courses/courses.actions';
 
 @AutoUnsubscribe()
 @Component({
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.email = this.store.pipe(select(auth.getUserEmail));
+    this.store.dispatch(new FetchAuthors());
   }
 
   logout(): void {

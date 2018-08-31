@@ -1,57 +1,62 @@
-<!--<app-breadcrumbs [currentCourse]="currentCourse"></app-breadcrumbs>-->
-<!--<form [formGroup]="courseForm" *ngIf="courseForm" class="row">-->
-  <!--<div class="form-group col-8">-->
-    <!--<label for="name">Name</label>-->
-    <!--<input-->
-      <!--type="text"-->
-      <!--class="form-control"-->
-      <!--id="name"-->
-      <!--placeholder="Name"-->
-      <!--formControlName="name"-->
-    <!--&gt;-->
-  <!--</div>-->
-  <!--<div class="form-group col-8">-->
-    <!--<label for="description">Description</label>-->
-    <!--<textarea-->
-      <!--class="form-control"-->
-      <!--id="description"-->
-      <!--rows="3"-->
-      <!--formControlName="description"-->
-    <!--&gt;</textarea>-->
-  <!--</div>-->
-  <!--<div class="form-group col-8">-->
-    <!--<label for="description">Date</label>-->
-    <!--<input-->
-      <!--placeholder="Datepicker"-->
-      <!--class="form-control"-->
-      <!--bsDatepicker-->
-      <!--formControlName="date"-->
-    <!--&gt;-->
-  <!--</div>-->
-  <!--<div class="form-group col-8">-->
-    <!--<label for="duration">Duration, min</label>-->
-    <!--<input-->
-      <!--appCustomValidator-->
-      <!--type="number"-->
-      <!--class="form-control"-->
-      <!--id="duration"-->
-      <!--placeholder="Duration"-->
-      <!--formControlName="length"-->
-    <!--&gt;-->
-    <!--<div>{{ courseForm.value.length | duration }}</div>-->
-  <!--</div>-->
-  <!--<div class="btn-group col-8">-->
-    <!--<button-->
-      <!--type="submit"-->
-      <!--class="btn btn-primary"-->
-      <!--(click)="onSubmit()"-->
-      <!--[disabled]="!courseForm.value.name"-->
-    <!--&gt;Save</button>-->
-    <!--<button-->
-      <!--type="submit"-->
-      <!--class="btn btn-danger"-->
-      <!--(click)="onCancel()"-->
-    <!--&gt;Cancel</button>-->
-  <!--</div>-->
-<!--</form>-->
-<app-multi-select></app-multi-select>
+<app-breadcrumbs [currentCourse]="currentCourse"></app-breadcrumbs>
+<form [formGroup]="courseForm" *ngIf="courseForm" class="row">
+  <div class="form-group col-8">
+    <label for="name">Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="name"
+      placeholder="Name"
+      formControlName="name"
+    >
+  </div>
+  <div class="form-group col-8">
+    <label for="description">Description</label>
+    <textarea
+      class="form-control"
+      id="description"
+      rows="3"
+      formControlName="description"
+    ></textarea>
+  </div>
+  <div class="form-group col-8">
+    <label for="description">Date</label>
+    <input
+      placeholder="Datepicker"
+      class="form-control"
+      bsDatepicker
+      formControlName="date"
+    >
+  </div>
+  <div class="form-group col-8">
+    <label for="duration">Duration, min</label>
+    <input
+      appCustomValidator
+      type="number"
+      class="form-control"
+      id="duration"
+      placeholder="Duration"
+      formControlName="length"
+    >
+    <div>{{ courseForm.value.length | duration }}</div>
+  </div>
+  <app-multi-select
+    *ngIf="authors | async as items"
+    [selectedItems]="selectedAuthors"
+    [items]="items"
+  ></app-multi-select>
+  <div class="btn-group col-8">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      (click)="onSubmit()"
+      [disabled]="!courseForm.value.name"
+    >Save</button>
+    <button
+      type="submit"
+      class="btn btn-danger"
+      (click)="onCancel()"
+    >Cancel</button>
+  </div>
+</form>
+

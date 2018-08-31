@@ -1,10 +1,12 @@
 import { createSelector } from '@ngrx/store';
 import { AppState } from '../store-configuration';
 import { Course } from '../shared/interfaces/course.model';
-import { CoursesActionsUnion, CoursesActionTypes, EditSuccess } from './courses.actions';
+import { CoursesActionsUnion, CoursesActionTypes } from './courses.actions';
+import { Author } from '../shared/interfaces/author.model';
 
 export interface CoursesState {
   courseList: Course[];
+  authors: Author[];
   pagination: {
     currentPage: number;
     itemsPerPage: number;
@@ -13,6 +15,7 @@ export interface CoursesState {
 
 const initialState: CoursesState = {
   courseList: [],
+  authors: [],
   pagination: {
     currentPage: 0,
     itemsPerPage: 5,
@@ -34,6 +37,12 @@ export function reducer(
       return {
         ...state,
         courseList: state.courseList.concat(action.payload.courses),
+      };
+
+    case CoursesActionTypes.FetchAuthorsSuccess:
+      return {
+        ...state,
+        authors: action.payload.authors,
       };
 
     case CoursesActionTypes.Paginate:
@@ -66,8 +75,12 @@ export function reducer(
 }
 
 export const selectCourses = (state: AppState) => state.courses.courseList;
+export const selectAuthors = (state: AppState) => state.courses.authors;
 
 export const getCourses = createSelector(
   selectCourses,
 );
 
+export const getAuthors = createSelector(
+  selectAuthors,
+);

@@ -1,11 +1,11 @@
-
-<ng-select
-  items]="authors | async"
-  bindLabel="name"
-  bindValue="id"
-  labelForId="state"
-  [multiple]="true"
-  placeholder="Select cities"
-  clearAllText="Clear"
-  formControlName="selectedAuthors">
-</ng-select>
+<form [formGroup]="form">
+  <ng-select
+    [items]="items"
+    bindLabel="name"
+    bindValue="id"
+    labelForId="state"
+    [multiple]="true"
+    clearAllText="Clear"
+    formControlName="selectedItems">
+  </ng-select>
+</form>

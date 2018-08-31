@@ -6,14 +6,13 @@ import { Subject } from 'rxjs/internal/Subject';
 import { Course } from '../shared/interfaces/course.model';
 import { ConfirmModalService } from '../shared/ui-components/confirm-modal/confirm-modal.service';
 import { interval } from 'rxjs/internal/observable/interval';
+import { Author } from '../shared/interfaces/author.model';
 
 const debounce_time = 300;
 const minSearchLength = 2;
 
 @Injectable()
 export class CoursesService {
-  static startFromCourseIndex = 0;
-  static coursesPerPage = 5;
 
   private baseUrl = 'courses';
   pagination = new Subject();
@@ -25,6 +24,10 @@ export class CoursesService {
 
   findCourse(query): Observable<Course[]> {
     return this.httpClient.get<Course[]>(`${this.baseUrl}/?textFragment=${query}`);
+  }
+
+  fetchAuthors(): Observable<Author[]> {
+    return this.httpClient.get<Author[]>('authors');
   }
 
   fetchCourses(start = 0, count = 5): Observable<Course[]> {

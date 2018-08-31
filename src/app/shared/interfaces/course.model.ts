@@ -1,3 +1,5 @@
+import { Author } from './author.model';
+
 export interface Course {
   id: string;
   name: string;
@@ -5,5 +7,5 @@ export interface Course {
   date: Date;
   length: number;
   isTopRated: boolean;
-  authors?: object[];
+  authors?: Author[];
 }

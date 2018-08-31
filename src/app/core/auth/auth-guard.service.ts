@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { select, Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as auth from '../../auth/auth.reducer';
+import { of } from 'rxjs/internal/observable/of';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +21,10 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.store.pipe(
-      select(auth.isAuthenticated),
-      tap((isAuth) => !isAuth && this.router.navigate(['/login'])),
-    );
+    return of(true);
+    // return this.store.pipe(
+    //   select(auth.isAuthenticated),
+    //   tap((isAuth) => !isAuth && this.router.navigate(['/login'])),
+    // );
   }
 }
